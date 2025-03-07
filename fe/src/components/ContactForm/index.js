@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 import { Form, ButtonContainer } from './styles';
 import FormGroup from '../FormGroup';
 import Input from '../Input';
@@ -6,10 +7,16 @@ import Select from '../Select';
 import Button from '../Button';
 
 export default function ContactForm({ buttonLabel }) {
+  const [name, setName] = useState('');
+
   return (
     <Form>
       <FormGroup>
-        <Input placeholder="Nome" />
+        <Input
+          placeholder="Nome"
+          onChange={(event) => setName(event.target.value)}
+          value={name}
+        />
       </FormGroup>
 
       <FormGroup
