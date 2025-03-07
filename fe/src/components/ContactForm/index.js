@@ -12,8 +12,16 @@ export default function ContactForm({ buttonLabel }) {
   const [phone, setPhone] = useState('');
   const [category, setCategory] = useState('');
 
+  function handleSubmit(event) {
+    event.preventDefault();
+    console.log({
+      name, email, phone, category,
+    });
+  }
+
   return (
-    <Form>
+    // eslint-disable-next-line react/jsx-no-bind
+    <Form onSubmit={handleSubmit}>
       <FormGroup>
         <Input
           placeholder="Nome"
