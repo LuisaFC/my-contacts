@@ -20,7 +20,6 @@ export default function ContactForm({ buttonLabel }) {
   }
 
   return (
-    // eslint-disable-next-line react/jsx-no-bind
     <Form onSubmit={handleSubmit}>
       <FormGroup>
         <Input
