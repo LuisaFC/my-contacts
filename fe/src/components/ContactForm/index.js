@@ -20,7 +20,7 @@ export default function ContactForm({ buttonLabel }) {
     if (!event.target.value) {
       setErrors((prevState) => [
         ...prevState,
-        { field: 'name', mesage: 'Nome é obrigatório' },
+        { field: 'name', message: 'Nome é obrigatório' },
       ]);
     } else {
       setErrors((prevState) => prevState.filter((error) => error.field !== 'name'));
@@ -37,13 +37,18 @@ export default function ContactForm({ buttonLabel }) {
 
       setErrors((prevState) => [
         ...prevState,
-        { field: 'email', mesage: 'Email inválido' },
+        { field: 'email', message: 'Email inválido' },
       ]);
     } else {
       setErrors((prevState) => prevState.filter((error) => error.field !== 'email'));
     }
   }
 
+  function getErrorMessageByFieldName(fieldName) {
+    return errors.find((error) => error.field === fieldName)?.message;
+  }
+
+  console.log(getErrorMessageByFieldName('name'));
   console.log(errors);
 
   function handleSubmit(event) {
@@ -56,8 +61,9 @@ export default function ContactForm({ buttonLabel }) {
   return (
     // eslint-disable-next-line react/jsx-no-bind
     <Form onSubmit={handleSubmit}>
-      <FormGroup>
+      <FormGroup error={getErrorMessageByFieldName('name')}>
         <Input
+          error={getErrorMessageByFieldName('name')}
           placeholder="Nome"
           // eslint-disable-next-line react/jsx-no-bind
           onChange={handleNameChange}
@@ -65,8 +71,9 @@ export default function ContactForm({ buttonLabel }) {
         />
       </FormGroup>
 
-      <FormGroup>
+      <FormGroup error={getErrorMessageByFieldName('email')}>
         <Input
+          error={getErrorMessageByFieldName('email')}
           placeholder="Email"
           // eslint-disable-next-line react/jsx-no-bind
           onChange={handleEmailChange}
