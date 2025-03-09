@@ -45,7 +45,7 @@ export default function ContactForm({ buttonLabel }) {
 
   return (
     // eslint-disable-next-line react/jsx-no-bind
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit} noValidate>
       <FormGroup error={getErrorMessageByFieldName('name')}>
         <Input
           error={getErrorMessageByFieldName('name')}
@@ -58,6 +58,7 @@ export default function ContactForm({ buttonLabel }) {
 
       <FormGroup error={getErrorMessageByFieldName('email')}>
         <Input
+          type="email"
           error={getErrorMessageByFieldName('email')}
           placeholder="Email"
           // eslint-disable-next-line react/jsx-no-bind
