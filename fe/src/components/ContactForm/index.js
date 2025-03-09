@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-bind */
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { Form, ButtonContainer } from './styles';
@@ -7,6 +8,7 @@ import FormGroup from '../FormGroup';
 import Input from '../Input';
 import Select from '../Select';
 import Button from '../Button';
+import formatPhone from '../../utils/formatPhone';
 
 export default function ContactForm({ buttonLabel }) {
   const [name, setName] = useState('');
@@ -36,6 +38,10 @@ export default function ContactForm({ buttonLabel }) {
     }
   }
 
+  function handlePhoneChage(event) {
+    setPhone(formatPhone(event.target.value));
+  }
+
   function handleSubmit(event) {
     event.preventDefault();
     /* console.log({
@@ -44,13 +50,11 @@ export default function ContactForm({ buttonLabel }) {
   }
 
   return (
-    // eslint-disable-next-line react/jsx-no-bind
     <Form onSubmit={handleSubmit} noValidate>
       <FormGroup error={getErrorMessageByFieldName('name')}>
         <Input
           error={getErrorMessageByFieldName('name')}
           placeholder="Nome"
-          // eslint-disable-next-line react/jsx-no-bind
           onChange={handleNameChange}
           value={name}
         />
@@ -60,8 +64,6 @@ export default function ContactForm({ buttonLabel }) {
         <Input
           type="email"
           error={getErrorMessageByFieldName('email')}
-          placeholder="Email"
-          // eslint-disable-next-line react/jsx-no-bind
           onChange={handleEmailChange}
           value={email}
         />
@@ -70,8 +72,9 @@ export default function ContactForm({ buttonLabel }) {
       <FormGroup>
         <Input
           placeholder="Telefone"
-          onChange={(event) => setPhone(event.target.value)}
+          onChange={handlePhoneChage}
           value={phone}
+          maxLength="15"
         />
       </FormGroup>
 
