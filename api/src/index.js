@@ -14,4 +14,4 @@ app.use((error, request, response, next) => {
   response.sendStatus(500);
 });
 
-app.listen(3005, () => console.log('🔥 Server started at http://localhost:3000/'));
+app.listen(3001, () => console.log('🔥 Server started at http://localhost:3001/'));
