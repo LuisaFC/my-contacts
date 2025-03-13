@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import {
   Container, Header, ListContainer, Card, InputSearchContainer,
 } from './styles';
@@ -10,13 +11,45 @@ import edit from '../../assets/images/icons/edit.svg';
 /* import Loader from '../../components/Loader'; */
 
 export default function Home() {
+  const [contacts, setContacts] = useState([]);
+
+  useEffect(() => {
+    fetch('http://localhost:3001/contacts', {
+      method: 'GET',
+    })
+      .then(async (response) => {
+        const json = await response.json();
+        setContacts(json);
+        setContacts([{
+          id: 1,
+          name: 'Luisa',
+          email: 'teste@teste.com',
+          phone: '6198765445',
+          category_name: 'Instagram',
+        },
+        {
+          id: 2,
+          name: 'Jhon',
+          email: 'teste@123.com',
+          phone: '777777',
+          category_name: '',
+        }]);
+      })
+      .catch((error) => {
+        console.error('Erro:', error);
+      });
+  }, []);
+
   return (
     <Container>
       <InputSearchContainer>
         <input type="text" placeholder="Pesquisar contato" />
       </InputSearchContainer>
       <Header>
-        <strong>3 Contatos</strong>
+        <strong>
+          {contacts.length}
+          {contacts.length === 1 ? ' contato' : ' contatos'}
+        </strong>
         <Link to="/new">Novo Contato</Link>
       </Header>
 
@@ -29,33 +62,29 @@ export default function Home() {
         </header>
       </ListContainer>
 
-      <Card>
-        <div className="info">
-          <div className="contact-name">
-            <strong>Luisa</strong>
-            <small>Instagram</small>
+      {contacts.map((contact) => (
+        <Card key={contact.id}>
+          <div className="info">
+            <div className="contact-name">
+              <strong>{contact.name}</strong>
+              {contact.category_name && (
+                <small>{contact.category_name}</small>
+              )}
+            </div>
+            <span>{contact.email}</span>
+            <span>{contact.phone}</span>
           </div>
-          <span>luisa@teste.com</span>
-          <span>(61) 987765445</span>
-        </div>
-        <div className="actions">
-          <Link to="/edit/123">
-            <img src={edit} alt="edit" />
-          </Link>
-          <button type="button">
-            <img src={trash} alt="delete" />
-          </button>
-        </div>
-      </Card>
+          <div className="actions">
+            <Link to={`/edit/${contact.id}`}>
+              <img src={edit} alt="edit" />
+            </Link>
+            <button type="button">
+              <img src={trash} alt="delete" />
+            </button>
+          </div>
+        </Card>
+      ))}
 
     </Container>
   );
 }
-
-fetch('http://localhost:3001/contacts')
-  .then((response) => {
-    console.log('response', response);
-  })
-  .catch((error) => {
-    console.error('Erro:', error);
-  });
