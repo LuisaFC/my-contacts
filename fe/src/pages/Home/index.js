@@ -12,34 +12,26 @@ import edit from '../../assets/images/icons/edit.svg';
 
 export default function Home() {
   const [contacts, setContacts] = useState([]);
+  const [orderBy, setOrderBy] = useState('asc');
 
   useEffect(() => {
-    fetch('http://localhost:3001/contacts', {
+    fetch(`http://localhost:3001/contacts?orderBy=${orderBy}`, {
       method: 'GET',
     })
       .then(async (response) => {
         const json = await response.json();
         setContacts(json);
-        setContacts([{
-          id: 1,
-          name: 'Luisa',
-          email: 'teste@teste.com',
-          phone: '6198765445',
-          category_name: 'Instagram',
-        },
-        {
-          id: 2,
-          name: 'Jhon',
-          email: 'teste@123.com',
-          phone: '777777',
-          category_name: '',
-        }]);
       })
       .catch((error) => {
         console.error('Erro:', error);
       });
-  }, []);
+  }, [orderBy]);
 
+  function handleToggleOrderBy() {
+    setOrderBy((prevState) => (prevState === 'asc' ? 'desc' : 'asc'));
+  }
+
+  console.log('orderBy:', orderBy);
   return (
     <Container>
       <InputSearchContainer>
@@ -53,8 +45,8 @@ export default function Home() {
         <Link to="/new">Novo Contato</Link>
       </Header>
 
-      <ListHeader>
-        <button type="button">
+      <ListHeader orderBy={orderBy}>
+        <button type="button" onClick={handleToggleOrderBy}>
           <span>Nome</span>
           <img src={arrow} alt="Arrow icon" />
         </button>

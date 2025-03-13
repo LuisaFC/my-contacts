@@ -59,13 +59,19 @@ export const ListHeader = styled.header`
     display: flex;
     border: none;
     align-items: center;
+
+    span {
+      margin-right: 8px;
+      font-weight: bold;
+      color: ${({ theme }) => theme.colors.primary.main};
   }
 
-  span {
-    margin-right: 8px;
-    font-weight: bold;
-    color: ${({ theme }) => theme.colors.primary.main};
+    img {
+      transform: ${(props) => (props.orderBy === 'asc' ? 'rotate(180deg)' : 'rotate(0deg)')};
+      transition: transform 0.2s ease-in;
+    }
   }
+
 
 `;
 
