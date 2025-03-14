@@ -3,7 +3,8 @@ import { useEffect, useState, useMemo } from 'react';
 import {
   Container, Header, ListHeader, Card, InputSearchContainer,
 } from './styles';
-import delay from '../../utils/delay';
+
+import ContactsService from '../../services/ContactsService';
 
 import arrow from '../../assets/images/icons/arrow.svg';
 import trash from '../../assets/images/icons/trash.svg';
@@ -17,6 +18,8 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
+  const { listContacts } = ContactsService();
+
   const filteredContacts = useMemo(() => contacts.filter((contact) => (
     contact.name.toLowerCase().includes(searchTerm.toLowerCase())
   )), [contacts, searchTerm]);
@@ -26,11 +29,9 @@ export default function Home() {
       try {
         setIsLoading(true);
 
-        const response = await fetch(`http://localhost:3001/contacts?orderBy=${orderBy}`);
-        await delay(1000);
+        const contactsList = await listContacts(orderBy);
 
-        const json = await response.json();
-        setContacts(json);
+        setContacts(contactsList);
       } catch (error) {
         console.error(error);
       } finally {
