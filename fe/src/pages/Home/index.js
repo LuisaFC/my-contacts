@@ -22,33 +22,23 @@ export default function Home() {
   )), [contacts, searchTerm]);
 
   useEffect(() => {
-    setIsLoading(true);
-    fetch(`http://localhost:3001/contacts?orderBy=${orderBy}`, {
-      method: 'GET',
-    })
-      .then(async (response) => {
+    async function loadContacts() {
+      try {
+        setIsLoading(true);
+
+        const response = await fetch(`http://localhost:3001/contacts?orderBy=${orderBy}`);
         await delay(1000);
+
         const json = await response.json();
-        setContacts([...json, {
-          id: 123,
-          name: 'Luisa',
-          email: 'luisa@example.com',
-          phone: '(11) 99999-9999',
-          category_name: 'Instaram',
-        }, {
-          id: 1245,
-          name: 'juniot',
-          email: 'luisa@example.com',
-          phone: '(11) 99999-9999',
-          category_name: 'Instaram',
-        }]);
-      })
-      .catch((error) => {
-        console.error('Erro:', error);
-      })
-      .finally(() => {
+        setContacts(json);
+      } catch (error) {
+        console.error(error);
+      } finally {
         setIsLoading(false);
-      });
+      }
+    }
+
+    loadContacts();
   }, [orderBy]);
 
   function handleToggleOrderBy() {
