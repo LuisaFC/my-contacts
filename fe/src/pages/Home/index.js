@@ -4,7 +4,7 @@ import {
   Container, Header, ListHeader, Card, InputSearchContainer,
 } from './styles';
 
-import ContactsService from '../../services/ContactsService';
+import { ContactsService } from '../../services/ContactsService';
 
 import arrow from '../../assets/images/icons/arrow.svg';
 import trash from '../../assets/images/icons/trash.svg';

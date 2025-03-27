@@ -1,12 +1,17 @@
-import delay from '../utils/delay';
+import { HttpClient } from './utils/HttpClient';
 
-export default function ContactsService() {
+export function ContactsService() {
+  const httpClient = HttpClient();
+
   async function listContacts(orderBy = 'asc') {
-    const response = await fetch(`http://localhost:3001/contacts?orderBy=${orderBy}`);
-    await delay(1000);
-
-    return response.json();
+    return httpClient.get(`contacts?orderBy=${orderBy}`);
   }
 
-  return { listContacts };
+  /*  async function createContact(contact) {
+    return HttpClient.post('/contacts?', contact);
+  }
+ */
+  return {
+    listContacts,
+  };
 }
