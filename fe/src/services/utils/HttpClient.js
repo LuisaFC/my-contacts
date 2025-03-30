@@ -5,12 +5,12 @@ export function HttpClient() {
   async function get(path) {
     await delay(1000);
     const response = await fetch(`${LOCALHOST}/${path}`);
-
+    const body = await response.json();
     if (response.ok) {
-      return response.json();
+      return body;
     }
 
-    throw new Error(`Error: ${response.status} - ${response.statusText}`);
+    throw new Error(body.error);
   }
 
   return {
