@@ -3,11 +3,14 @@ import { LOCALHOST } from './endpoints';
 
 export function HttpClient() {
   async function get(path) {
+    await delay(1000);
     const response = await fetch(`${LOCALHOST}/${path}`);
 
-    await delay(1000);
+    if (response.ok) {
+      return response.json();
+    }
 
-    return response.json();
+    throw new Error(`Error: ${response.status} - ${response.statusText}`);
   }
 
   return {
