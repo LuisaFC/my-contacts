@@ -1,3 +1,4 @@
+import APIError from '../../errors/APIError';
 import delay from '../../utils/delay';
 import { LOCALHOST } from './endpoints';
 
@@ -16,9 +17,7 @@ export function HttpClient() {
       return body;
     }
 
-    throw new Error(
-      body?.error || `${response.status} - ${response.statusText}`,
-    );
+    throw new APIError(response, body);
   }
 
   return {
