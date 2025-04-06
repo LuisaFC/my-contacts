@@ -1,15 +1,16 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useState, useMemo } from 'react';
 import {
-  Container, Header, ListHeader, Card, InputSearchContainer,
+  Container, Header, ListHeader, Card, InputSearchContainer, ErrorContainer,
 } from './styles';
 
 import { ContactsService } from '../../services/ContactsService';
+import Button from '../../components/Button';
 
 import arrow from '../../assets/images/icons/arrow.svg';
 import trash from '../../assets/images/icons/trash.svg';
 import edit from '../../assets/images/icons/edit.svg';
-/* import Modal from '../../components/Modal'; */
+import sad from '../../assets/images/sad.svg';
 import Loader from '../../components/Loader';
 
 export default function Home() {
@@ -17,6 +18,7 @@ export default function Home() {
   const [orderBy, setOrderBy] = useState('asc');
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
 
   const { listContacts } = ContactsService();
 
@@ -33,9 +35,7 @@ export default function Home() {
 
         setContacts(contactsList);
       } catch (error) {
-        console.error('name:', error.name);
-        console.error('message:', error.message);
-        console.error('response:', error.response);
+        setHasError(true);
       } finally {
         setIsLoading(false);
       }
@@ -58,13 +58,24 @@ export default function Home() {
       <InputSearchContainer>
         <input value={searchTerm} type="text" placeholder="Pesquisar contato" onChange={handleChangeSearchTerm} />
       </InputSearchContainer>
-      <Header>
-        <strong>
-          {filteredContacts.length}
-          {filteredContacts.length === 1 ? ' contato' : ' contatos'}
-        </strong>
+      <Header hasError={hasError}>
+        {!hasError && (
+          <strong>
+            {filteredContacts.length}
+            {filteredContacts.length === 1 ? ' contato' : ' contatos'}
+          </strong>
+        )}
         <Link to="/new">Novo Contato</Link>
       </Header>
+      {hasError && (
+      <ErrorContainer>
+        <img src={sad} alt="sad" />
+        <div className="details">
+          <strong>Ocorreu um erro ao obter os seus contatos!</strong>
+          <Button type="button">Tentar Novamente</Button>
+        </div>
+      </ErrorContainer>
+      )}
 
       {filteredContacts.length > 0 && (
         <ListHeader orderBy={orderBy}>
